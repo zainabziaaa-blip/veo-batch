@@ -1,0 +1,5 @@
+{
+  "name": "VeoBatch",
+  "description": "A high-performance batch processing tool that converts collections of images into AI-generated videos using Google's Veo model.",
+  "requestFramePermissions": []
+}
