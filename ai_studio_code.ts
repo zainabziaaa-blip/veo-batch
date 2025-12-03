@@ -199,7 +199,7 @@ export const generateVideo = async (
         urlObj.searchParams.append('key', trimmedKey);
         finalUrl = urlObj.toString();
     } catch (e) {
-        // Fallback for simple string if URL parsing fails (unlikely for valid APIs)
+        // Fallback for simple string if URL parsing fails
         if (finalUrl.includes('?')) {
             finalUrl += `&key=${trimmedKey}`;
         } else {

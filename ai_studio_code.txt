@@ -5,7 +5,7 @@ import { generateVideo } from './services/geminiService';
 import { UploadArea } from './components/UploadArea';
 import { JobCard } from './components/JobCard';
 import { Button } from './components/Button';
-import { Play, Trash2, Square, Key, Settings } from 'lucide-react';
+import { Play, Trash2, Square, Settings } from 'lucide-react';
 
 const App: React.FC = () => {
   const [jobs, setJobs] = useState<VideoJob[]>([]);
@@ -25,6 +25,7 @@ const App: React.FC = () => {
 
   // Check for Environment Variable Key on Mount
   useEffect(() => {
+    // process.env is polyfilled by vite.config.ts
     const envKey = process.env.API_KEY;
     if (envKey && envKey.length > 0) {
       setApiKey(envKey);
@@ -91,7 +92,7 @@ const App: React.FC = () => {
         const videoBlob = await generateVideo(
           job.file, 
           config, 
-          apiKey, // Pass the active key
+          apiKey, // Pass the active key explicitly
           (progress) => {
             setJobs(prev => prev.map(j => j.id === job.id ? { ...j, progress } : j));
           },
@@ -121,7 +122,7 @@ const App: React.FC = () => {
         if (error.message?.includes("400") || error.message?.includes("API key not valid")) {
             setJobs(prev => prev.map(j => j.id === job.id ? { ...j, status: JobStatus.FAILED, error: 'Invalid API Key' } : j));
             alert("The API Key appears to be invalid. Please check your settings.");
-            setShowSettings(true); // Open settings to fix it
+            setShowSettings(true); 
             break; 
         }
 
@@ -162,7 +163,6 @@ const App: React.FC = () => {
                     if (e.key === 'Enter') handleSaveKey(e.currentTarget.value);
                   }}
                   onChange={(e) => {
-                     // Auto-save if they paste a full key (optional UX)
                      if(e.target.value.length > 20) handleSaveKey(e.target.value);
                   }}
                 />
